@@ -168,6 +168,7 @@
     "@craftzdog/react-native-buffer": "^6.0.5",
     "@leapwallet/leap-keychain": "0.0.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "@types/uuid": "^9.0.0",
     "assert": "^2.0.0",
     "bech32": "^2.0.0",
     "bip32": "2.0.6",
@@ -177,6 +178,7 @@
     "react-native-quick-base64": "^2.0.5",
     "react-native-quick-crypto": "^0.5.0",
     "stream": "^0.0.2",
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "uuid": "^9.0.0"
   }
 }

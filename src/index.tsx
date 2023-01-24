@@ -9,3 +9,4 @@ initStorage(getStorage(new MMKV()));
 export { mnemonicToSeed } from './crypto/bip39';
 export { Wallet, PvtKeyWallet } from './key/wallet';
 export * from '@leapwallet/leap-keychain';
+export * from './keychain/keychain';
