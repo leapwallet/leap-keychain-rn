@@ -64,7 +64,7 @@ jobs:
           node-version: 16
 
       - run: yarn
-      - run: yarn build
+      - run: yarn prepack
       - run: |
           echo @leapwallet:https://npm.pkg.github.com/ > .npmrc
           echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc
