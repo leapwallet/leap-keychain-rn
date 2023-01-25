@@ -69,6 +69,6 @@ jobs:
           echo @leapwallet:https://npm.pkg.github.com/ > .npmrc
           echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc
 
-      - run: yarn publish
+      - run: yarn release --ci
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
