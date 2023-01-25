@@ -60,7 +60,7 @@ export default function App() {
     <View style={styles.container}>
       {wallets
         ? Object.values(wallets ?? {}).map((wallet) => {
-            return <Text>wallet: {wallet.addresses['cosmos']}</Text>;
+            return <Text>wallet: {wallet.addresses.cosmos}</Text>;
           })
         : null}
       {loader ? (

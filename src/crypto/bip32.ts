@@ -3,8 +3,9 @@ import { bech32 } from 'bech32';
 import { cryptoToken } from './crypto';
 import Container from 'typedi';
 import { ec } from 'elliptic';
-import { mnemonicToSeed } from './bip39';
+
 import type { IChildKey, IHDKey } from '@leapwallet/leap-keychain';
+import { Bip39 } from './bip39';
 
 export namespace Bip32 {
   export function derivePath(key: IHDKey, path: string) {
@@ -43,7 +44,7 @@ export class Wallet {
   constructor(private privateKey: Buffer) {}
 
   static fromMnemonic(mnemonic: string, path: string) {
-    const seed = mnemonicToSeed(mnemonic);
+    const seed = Bip39.mnemonicToSeed(mnemonic);
     //@ts-ignore
     const hdKey = bip32.fromSeed(seed);
     const { privateKey } = hdKey.derivePath(path);

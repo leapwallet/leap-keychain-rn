@@ -9,7 +9,7 @@ function normalize(str: string) {
   return str.normalize('NFKD');
 }
 
-export function mnemonicToSeed(mnemonic: string, passphrase?: string) {
+export function _mnemonicToSeed(mnemonic: string, passphrase?: string) {
   const mnemonicBuffer = Buffer.from(normalize(mnemonic), 'utf8');
   const saltBuffer = Buffer.from(
     `mnemonic${normalize(passphrase ?? '')}`,
@@ -70,7 +70,7 @@ export function entropyToMnemonic(
   return words.join(' ');
 }
 
-export function generateMnemonic(
+export function _generateMnemonic(
   strength?: number,
   rng?: (size: number) => Buffer,
   wordlist = DEFAULT_WORDLIST
@@ -88,7 +88,7 @@ export function generateMnemonic(
 
 export namespace Bip39 {
   export function generateMnemonic(strength: number): string {
-    return generateMnemonic(strength);
+    return _generateMnemonic(strength);
   }
   export function mnemonicToSeed(mnemonic: string): Promise<Uint8Array> {
     return Promise.resolve(mnemonicToSeedSync(mnemonic));

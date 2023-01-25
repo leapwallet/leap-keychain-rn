@@ -3,7 +3,6 @@ import { bech32 } from 'bech32';
 import { cryptoToken } from '../crypto/crypto';
 import Container from 'typedi';
 import { ec } from 'elliptic';
-import { mnemonicToSeed } from '../crypto/bip39';
 import type { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import {
   serializeSignDoc,
@@ -12,6 +11,7 @@ import {
 import { encodeSecp256k1Signature } from '../utils/encode-signature';
 import type { StdSignDoc } from '../types/tx';
 import { Buffer } from '@craftzdog/react-native-buffer';
+import { bip39Token } from '@leapwallet/leap-keychain';
 
 type WalletOptions = {
   paths: Array<string>;
@@ -27,7 +27,8 @@ export class Wallet {
   ) {}
 
   static generateWallet(mnemonic: string, options: WalletOptions) {
-    const seed = mnemonicToSeed(mnemonic);
+    const bip39 = Container.get(bip39Token);
+    const seed = bip39.mnemonicToSeed(mnemonic);
     //@ts-ignore
     const hdKey = bip32.fromSeed(seed);
 
@@ -166,7 +167,7 @@ export class PvtKeyWallet {
   public async signAmino(signerAddress: string, signDoc: StdSignDoc) {
     const accounts = this.getAccounts();
     const account = accounts.find(
-      (account) => account.address === signerAddress
+      (_account) => _account.address === signerAddress
     );
     if (!account) {
       throw new Error('Signer address does not match wallet address');

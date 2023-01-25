@@ -186,7 +186,6 @@ export class RNKeyChain {
           account?.pubkey as Uint8Array
         );
         if (chainName === 'cosmos') {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           // mainWallet = wallet
           pubKey = account.pubkey;

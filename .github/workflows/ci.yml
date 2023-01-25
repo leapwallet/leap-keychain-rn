@@ -46,3 +46,24 @@ jobs:
 
       - name: Build package
         run: yarn prepack
+
+  publish-lib:
+    if: github.ref == 'refs/heads/main'
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - run: yarn
+      - run: yarn build
+      - run: |
+          echo @leapwallet:https://npm.pkg.github.com/ > .npmrc
+          echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc
+      - run: yarn publish
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
