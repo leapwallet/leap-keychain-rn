@@ -8,6 +8,7 @@ import {
   secp256k1Token,
   PvtKeyWallet,
   ChainInfo,
+  pubkeyToAddress,
 } from '@leapwallet/leap-keychain';
 import getHDPath from '@leapwallet/leap-keychain/dist/src/utils/get-hdpath';
 
@@ -164,36 +165,43 @@ export class RNKeyChain {
 
       let pubKey: Uint8Array | undefined;
       const pubKeys: Record<string, string> = {};
+      let cosmosPubKey: Uint8Array | undefined;
       let algo: string = '';
-      for (const [chainName, chainInfo] of chainsData) {
-        const wallet =
-          walletType === WALLETTYPE.PRIVATE_KEY
-            ? await generateWalletFromPrivateKey(
-                mnemonic,
-                getHDPath(chainInfo.coinType, addressIndex),
-                chainInfo.addressPrefix
-              )
-            : await generateWalletFromMnemonic(
-                mnemonic,
-                getHDPath(chainInfo.coinType, addressIndex),
-                chainInfo.addressPrefix
-              );
-
-        const [account] = await wallet.getAccounts();
-        algo = 'secp256k1';
-
-        pubKeys[chainInfo.key] = compressedPublicKey(
-          account?.pubkey as Uint8Array
-        );
-        if (chainName === 'cosmos') {
-          // @ts-ignore
-          // mainWallet = wallet
-          pubKey = account.pubkey;
-
-          const address = account?.address;
-
+      for (const [_, chainInfo] of chainsData) {
+        if (chainInfo.coinType === '118' && cosmosPubKey) {
+          const address = pubkeyToAddress(
+            chainInfo.addressPrefix,
+            cosmosPubKey
+          );
+          pubKeys[chainInfo.key] = compressedPublicKey(
+            cosmosPubKey as Uint8Array
+          );
           addresses[chainInfo.key] = address ?? '';
         } else {
+          const wallet =
+            walletType === WALLETTYPE.PRIVATE_KEY
+              ? await generateWalletFromPrivateKey(
+                  mnemonic,
+                  getHDPath(chainInfo.coinType, addressIndex),
+                  chainInfo.addressPrefix
+                )
+              : await generateWalletFromMnemonic(
+                  mnemonic,
+                  getHDPath(chainInfo.coinType, addressIndex),
+                  chainInfo.addressPrefix
+                );
+
+          const [account] = await wallet.getAccounts();
+          algo = 'secp256k1';
+
+          if (chainInfo.addressPrefix === 'cosmos') {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            cosmosPubKey = account?.pubkey as Uint8Array;
+          }
+
+          pubKeys[chainInfo.key] = compressedPublicKey(
+            account?.pubkey as Uint8Array
+          );
           addresses[chainInfo.key] = account?.address ?? '';
         }
       }
