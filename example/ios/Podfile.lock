@@ -300,7 +300,7 @@ PODS:
   - React-jsinspector (0.71.0)
   - React-logger (0.71.0):
     - glog
-  - react-native-leap-keychain-rn (0.1.0):
+  - react-native-leap-keychain-rn (0.1.5):
     - React-Core
   - react-native-mmkv (2.6.1):
     - MMKV (>= 1.2.13)
@@ -592,7 +592,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 060dd495f1e2af3d87216f7ca8a94c55ec885b4f
   React-jsinspector: 5061fcbec93fd672183dfb39cc2f65e55a0835db
   React-logger: a6c0b3a807a8e81f6d7fea2e72660766f55daa50
-  react-native-leap-keychain-rn: e7094fee6555e1b500b84e344295d73a985e80ab
+  react-native-leap-keychain-rn: 348578032a29d407c3435a3594359db59219891a
   react-native-mmkv: 28af0c2a3dc9495c2cea80f9d41444e096c2a1ef
   react-native-quick-crypto: a903ff39ac8fea78bb9d37cccc5cc0596afc9670
   React-perflogger: e5fc4149e9bbb972b8520277f3b23141faa47a36
