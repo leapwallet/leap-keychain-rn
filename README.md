@@ -4,18 +4,42 @@ Key management library for react native apps
 
 ## Installation
 
-```sh
-npm install react-native-leap-keychain-rn
-```
+Use one of the following methods:
 
+- npm:
+  ```shell
+  npm i @leapwallet/leap-keychain-rn
+  ```
+- Yarn:
+  ```shell
+  yarn add @leapwallet/leap-keychain-rn
+  ```
+  
 ## Usage
 
-```js
-import { multiply } from 'react-native-leap-keychain-rn';
+```javascript
 
-// ...
+  import { KeyChain } from '@leapwallet/leap-keychain-rn'
 
-const result = await multiply(3, 7);
+  // create wallet using mnemonic
+
+  KeyChain.createWalletUsingMnemonic({
+    mnemonic: "12/24 word mnemonic",
+    name: "wallet name";
+    password: "encryption password";
+    addressIndex: "address index";
+    colorIndex: "0";
+    chainInfos: {
+      //The 'chain infos' object includes the address prefix and coin type for the chains for which wallet creation is required.
+      cosmos: {
+        addressPrefix: 'cosmos',
+        coinType: '118',
+        key: 'cosmos'
+      }
+    };
+  })
+  
+
 ```
 
 ## Contributing
@@ -25,7 +49,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
