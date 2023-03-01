@@ -66,12 +66,12 @@ jobs:
       - run: yarn
       - run: yarn prepack
       - run: |
-          echo @leapwallet:https://npm.pkg.github.com/ > .npmrc
-          echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> .npmrc
+          echo @leapwallet:https://registry.npmjs.org/ > .npmrc
+          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
           git config user.email ${{ secrets.USER_EMAIL }}
           git config user.name ${{ secrets.USER_NAME }}
 
       - run: yarn release --ci
         env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
