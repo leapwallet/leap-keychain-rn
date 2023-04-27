@@ -205,14 +205,6 @@ export class RNKeyChain {
           addresses[chainInfo.key] = account?.address ?? '';
         }
       }
-      /**
-       *  TODO:
-       *  Need to convert the pubkey to hex before storing to
-       *  prevent data loss while decoding it
-       *
-       *  Example:
-       *  pubKey: toHex(pubKey as Uint8Array),
-       */
 
       return {
         addresses,
