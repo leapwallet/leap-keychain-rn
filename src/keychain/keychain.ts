@@ -128,8 +128,10 @@ export class RNKeyChain {
       cipher = encrypt(mnemonic, password);
     }
 
+    if (!mnemonic) throw new Error('Invalid mnemonic');
+
     const { addresses, pubKey, algo, pubKeys } = await RNKeyChain.getAddresses(
-      mnemonic ?? '',
+      mnemonic,
       addressIndex.toString(),
       WALLETTYPE.SEED_PHRASE,
       ChainInfos
