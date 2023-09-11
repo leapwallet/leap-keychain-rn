@@ -40,6 +40,7 @@ export default function App() {
         password: 'password',
         addressIndex: 0,
         colorIndex: 0,
+        type: 'create',
       });
       console.log('wallet created', x);
     } catch (e) {
