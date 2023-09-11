@@ -8,6 +8,8 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version-file: .nvmrc
+        registry-url: 'https://npm.pkg.github.com'
+        scope: '@leapwallet'
 
     - name: Cache dependencies
       id: yarn-cache
@@ -21,9 +23,6 @@ runs:
 
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
-      with:
-        registry-url: "https://npm.pkg.github.com"
-        scope: "@leapwallet"
       run: |
         yarn install --cwd example --frozen-lockfile
         yarn install --frozen-lockfile
