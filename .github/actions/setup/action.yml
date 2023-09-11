@@ -22,8 +22,8 @@ runs:
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       with:
-        registry-url: 'https://npm.pkg.github.com'
-        scope: '@leapwallet'
+        registry-url: "https://npm.pkg.github.com"
+        scope: "@leapwallet"
       run: |
         yarn install --cwd example --frozen-lockfile
         yarn install --frozen-lockfile
