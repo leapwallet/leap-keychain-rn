@@ -3,8 +3,8 @@ import { TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
   mnemonicToSeed(
-    mnemonic: Array<String>,
-    passphrase?: String
+    mnemonic: Array<string>,
+    passphrase?: string
   ): Promise<Uint8Array>;
 }
 

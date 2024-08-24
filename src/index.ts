@@ -8,5 +8,7 @@ initStorage(getStorage(new MMKV()));
 
 export { Bip39 } from './crypto/bip39';
 export { Wallet, PvtKeyWallet } from './key/wallet';
+export { rnDecrypt, rnEncrypt } from './encryption-utils/encryption-utils';
 export * from '@leapwallet/leap-keychain';
+export { compressedPublicKey } from '@leapwallet/leap-keychain';
 export * from './keychain/keychain';

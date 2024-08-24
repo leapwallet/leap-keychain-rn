@@ -1,4 +1,4 @@
-import { binaryToByte, bytesToBinary } from '../utils/lpad';
+import { binaryToByte, bytesToBinary, lpad } from '../utils/lpad';
 import { Container } from 'typedi';
 import { cryptoToken } from './crypto';
 import { english } from '../constants/wordlists';
@@ -22,7 +22,7 @@ export function _mnemonicToSeed(mnemonic: string, passphrase?: string) {
     saltBuffer,
     2048,
     64,
-    'sha512'
+    'SHA-512'
   );
   return seed;
 }
@@ -86,6 +86,53 @@ export function _generateMnemonic(
   return entropyToMnemonic(rng(strength / 8), wordlist);
 }
 
+function _mnemonicToEntropy(mnemonic: string, wordlist = DEFAULT_WORDLIST) {
+  wordlist = wordlist || DEFAULT_WORDLIST;
+  if (!wordlist) {
+    throw new Error('Word list is required');
+  }
+  const words = normalize(mnemonic).split(' ');
+  if (words.length % 3 !== 0) {
+    throw new Error('Invalid mnemonic');
+  }
+  // convert word indices to 11 bit binary strings
+  const bits = words
+    .map((word) => {
+      const index = wordlist.indexOf(word);
+      if (index === -1) {
+        throw new Error('Invalid mnemonic');
+      }
+      return lpad(index.toString(2), '0', 11);
+    })
+    .join('');
+  // split the binary string into ENT/CS
+  const dividerIndex = Math.floor(bits.length / 33) * 32;
+  const entropyBits = bits.slice(0, dividerIndex);
+  const checksumBits = bits.slice(dividerIndex);
+  // calculate the checksum and compare
+
+  const entropyBytes = entropyBits.match(/(.{1,8})/g)?.map(binaryToByte);
+  if (entropyBytes) {
+    if (entropyBytes.length < 16) {
+      throw new Error('Invalid entropy');
+    }
+    if (entropyBytes.length > 32) {
+      throw new Error('Invalid entropy');
+    }
+    if (entropyBytes.length % 4 !== 0) {
+      throw new Error('Invalid entropy');
+    }
+    const entropy = Buffer.from(entropyBytes);
+    const newChecksum = deriveChecksumBits(entropy);
+    if (newChecksum !== checksumBits) {
+      throw new Error('Invalid checksum');
+    }
+    return entropy.toString('hex');
+  } else {
+    throw new Error('Invalid entropy');
+  }
+}
+
 export namespace Bip39 {
   export function generateMnemonic(strength: number): string {
     return _generateMnemonic(strength);
@@ -96,6 +143,9 @@ export namespace Bip39 {
   export function validateMnemonic(mnemonic: string): boolean {
     // TODO: implement mnemonic validation function
     return !!mnemonic;
+  }
+  export function mnemonicToEntropy(mnemonic: string): string {
+    return _mnemonicToEntropy(mnemonic);
   }
   export function mnemonicToSeedSync(
     mnemonic: string,
@@ -112,8 +162,8 @@ export namespace Bip39 {
       saltBuffer,
       2048,
       64,
-      'sha512'
+      'SHA-512'
     );
-    return seed;
+    return new Uint8Array(seed);
   }
 }
