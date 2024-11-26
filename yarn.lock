@@ -2044,10 +2044,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@leapwallet/leap-keychain@0.2.5-beta.2":
-  version "0.2.5-beta.2"
-  resolved "https://npm.pkg.github.com/download/@leapwallet/leap-keychain/0.2.5-beta.2/1516eb07cd32745fa63cd45de143115b90aec1cd#1516eb07cd32745fa63cd45de143115b90aec1cd"
-  integrity sha512-Aq41P3pEZ9Dj0YSN9kz524HvHOoIQ9lR8yMzwQ130IciaCs1OQSjvbVIxs3m+S2MkaqpOGrbMXTw48QCGF5Pag==
+"@leapwallet/leap-keychain@0.2.5-beta.14":
+  version "0.2.5-beta.14"
+  resolved "https://npm.pkg.github.com/download/@leapwallet/leap-keychain/0.2.5-beta.14/0ecfb83228b5c9b3531a398bb56ffcf9b70d1dbd#0ecfb83228b5c9b3531a398bb56ffcf9b70d1dbd"
+  integrity sha512-Cr1FS+J6Z2twGyoZLULMQtKPew1nFkRk/tJ+185Wuu5I9zEqWjGbZPgYJJekb3umo7yxiF8j1JO4wwzMpyTLvg==
   dependencies:
     "@ethersproject/bytes" "5.7.0"
     "@ethersproject/hdnode" "5.7.0"
@@ -2057,11 +2057,12 @@
     "@noble/secp256k1" "1.7.0"
     "@scure/base" "1.1.6"
     "@scure/bip32" "1.1.1"
+    "@scure/btc-signer" "^1.4.0"
     base64-js "1.5.1"
     bech32 "2.0.0"
     bip32 "2.0.6"
     bip39 "3.0.4"
-    cosmjs-types "0.6.1"
+    cosmjs-types "0.8.0"
     ethereumjs-util "7.1.5"
     typedi "0.10.0"
     uuid "9.0.0"
@@ -2078,15 +2079,32 @@
   resolved "https://registry.yarnpkg.com/@noble/ciphers/-/ciphers-0.5.3.tgz#48b536311587125e0d0c1535f73ec8375cd76b23"
   integrity sha512-B0+6IIHiqEs3BPMT0hcRmHvEj2QHOLu+uwt+tqDDeVd0oyVzh7BPrDcPjRnV1PV/5LaknXJJQvOuRGR0zQJz+w==
 
+"@noble/curves@~1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.7.0.tgz#0512360622439256df892f21d25b388f52505e45"
+  integrity sha512-UTMhXK9SeDhFJVrHeUJ5uZlI6ajXg10O6Ddocf9S6GjbSBVZsJo88HzKwXznNfGpMTRDyJkqMjNDPYgf0qFWnw==
+  dependencies:
+    "@noble/hashes" "1.6.0"
+
 "@noble/hashes@1.1.5", "@noble/hashes@~1.1.3":
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.1.5.tgz#1a0377f3b9020efe2fae03290bd2a12140c95c11"
   integrity sha512-LTMZiiLc+V4v1Yi16TD6aX2gmtKszNye0pQgbaLqkvhIqP7nVsSaJsWloGQjJfJ8offaoP5GtX3yY5swbcJxxQ==
 
+"@noble/hashes@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.6.0.tgz#d4bfb516ad6e7b5111c216a5cc7075f4cf19e6c5"
+  integrity sha512-YUULf0Uk4/mAA89w+k3+yUYh6NrEvxZa5T6SY3wlMvE2chHkxFUUIDI8/XW1QSC357iA5pSnqt7XEhvFOqmDyQ==
+
 "@noble/hashes@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.4.0.tgz#45814aa329f30e4fe0ba49426f49dfccdd066426"
   integrity sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==
+
+"@noble/hashes@~1.6.0":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.6.1.tgz#df6e5943edcea504bac61395926d6fd67869a0d5"
+  integrity sha512-pq5D8h10hHBjyqX+cfBm0i8JUXJ0UhczFc4r74zbuT9XgewFo2E3J1cOaGtdZynILNmQ685YWGzGE1Zv6io50w==
 
 "@noble/secp256k1@1.7.0":
   version "1.7.0"
@@ -2664,6 +2682,11 @@
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.1.7.tgz#fe973311a5c6267846aa131bc72e96c5d40d2b30"
   integrity sha512-PPNYBslrLNNUQ/Yad37MHYsNQtK67EhWb6WtSvNLLPo7SdVZgkUjD6Dg+5On7zNwmskf8OX7I7Nx5oN+MIWE0g==
 
+"@scure/base@~1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.2.1.tgz#dd0b2a533063ca612c17aa9ad26424a2ff5aa865"
+  integrity sha512-DGmGtC8Tt63J5GfHgfl5CuAXh96VF/LD8K9Hr/Gv0J2lAoRGlPOMpqMpMbCTOoOJMZCk2Xt+DskdDyn6dEFdzQ==
+
 "@scure/bip32@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@scure/bip32/-/bip32-1.1.1.tgz#f62e4a2f13cc3e5e720ad81b7582b8631ae6835a"
@@ -2672,6 +2695,16 @@
     "@noble/hashes" "~1.1.3"
     "@noble/secp256k1" "~1.7.0"
     "@scure/base" "~1.1.0"
+
+"@scure/btc-signer@^1.4.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@scure/btc-signer/-/btc-signer-1.5.0.tgz#de0f6ea31c746a79a5e213099b406a57de1ef785"
+  integrity sha512-KCtq5z73/VthxeXrxgWgZNgOz6tXaSRr1+mMPCec5+S2G3aDLnh+uLM/l4imBWFm5cTppKG0ZmEk0N2thC7WVA==
+  dependencies:
+    "@noble/curves" "~1.7.0"
+    "@noble/hashes" "~1.6.0"
+    "@scure/base" "~1.2.1"
+    micro-packed "~0.7.0"
 
 "@sideway/address@^4.1.5":
   version "4.1.5"
@@ -4421,6 +4454,14 @@ cosmjs-types@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.6.1.tgz#4944e83d0fa87880243a11813bdff0e313d39a68"
   integrity sha512-fRz6yzElHHBULDyLArF/G1UkkTWW4r3RondBUGnmSsZWYI5NpfDn32MVa5aRmpaaf4tJI2cbnXHs9fykwU7Ttg==
+  dependencies:
+    long "^4.0.0"
+    protobufjs "~6.11.2"
+
+cosmjs-types@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.8.0.tgz#2ed78f3e990f770229726f95f3ef5bf9e2b6859b"
+  integrity sha512-Q2Mj95Fl0PYMWEhA2LuGEIhipF7mQwd9gTQ85DdP9jjjopeoGaDxvmPa5nakNzsq7FnO1DMTatXTAx6bxMH7Lg==
   dependencies:
     long "^4.0.0"
     protobufjs "~6.11.2"
@@ -7924,6 +7965,13 @@ metro@0.80.9, metro@^0.80.3:
     throat "^5.0.0"
     ws "^7.5.1"
     yargs "^17.6.2"
+
+micro-packed@~0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/micro-packed/-/micro-packed-0.7.0.tgz#e69ca4f1c160eb1f2c91329eca06b799c72f3bf0"
+  integrity sha512-GJB99Ox8AI3C2Xr9DFalmHjYaJTUwh6w18jqnOKJEU9fpR9uZaRGCE8xjSS4b9yH2KDmW2BdPR8BylzfYVBIdg==
+  dependencies:
+    "@scure/base" "~1.2.1"
 
 micromatch@^4.0.4:
   version "4.0.7"
