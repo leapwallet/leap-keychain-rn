@@ -1,10 +1,11 @@
 import {
   ChainInfo,
-  EthWallet,
   generateWalletFromMnemonic,
+  generateWalletFromPrivateKey,
+  getFullHDPath,
   Key,
+  NETWORK,
   pubkeyToAddress,
-  PvtKeyWallet,
   secp256k1Token,
   WALLETTYPE,
 } from '@leapwallet/leap-keychain';
@@ -12,23 +13,7 @@ import {
 import Container from 'typedi';
 import * as base64js from 'base64-js';
 import { v4 as uuidv4 } from 'uuid';
-import getHDPath from '../utils/get-hdpath';
 import { rnDecrypt, rnEncrypt } from '../encryption-utils/encryption-utils';
-
-function generateWalletFromPrivateKey(
-  privateKey: string,
-  coinType: string,
-  addressPrefix: string
-) {
-  const wallet =
-    coinType === '60'
-      ? EthWallet.generateWalletFromPvtKey(privateKey, {
-          paths: [getHDPath('60', '0')],
-          addressPrefix: addressPrefix,
-        })
-      : PvtKeyWallet.generateWallet(privateKey, addressPrefix);
-  return wallet;
-}
 
 export function compressedPublicKey(publicKey: Uint8Array) {
   const secp256k1 = Container.get(secp256k1Token);
@@ -139,7 +124,13 @@ export class RNKeyChain {
     mnemonic: string,
     addressIndex = '0',
     walletType: WALLETTYPE,
-    chainInfos: { coinType: string; addressPrefix: string; key: string }[]
+    chainInfos: {
+      coinType: string;
+      addressPrefix: string;
+      key: string;
+      btcNetwork?: typeof NETWORK;
+      useBip84?: boolean;
+    }[]
   ) {
     try {
       const chainsData = Object.entries(chainInfos);
@@ -160,17 +151,24 @@ export class RNKeyChain {
           );
           addresses[chainInfo.key] = address ?? '';
         } else {
+          const purpose = chainInfo.useBip84 ? '84' : '44';
+          const hdPath = getFullHDPath(
+            purpose,
+            chainInfo.coinType,
+            addressIndex
+          );
           const wallet =
             walletType === WALLETTYPE.PRIVATE_KEY
               ? generateWalletFromPrivateKey(
                   mnemonic,
-                  chainInfo.coinType,
+                  hdPath,
                   chainInfo.addressPrefix
                 )
               : generateWalletFromMnemonic(mnemonic, {
-                  hdPath: getHDPath(chainInfo.coinType, addressIndex),
+                  hdPath,
                   addressPrefix: chainInfo.addressPrefix,
                   ethWallet: false,
+                  btcNetwork: chainInfo.btcNetwork,
                 });
 
           const [account] = await wallet.getAccounts();
