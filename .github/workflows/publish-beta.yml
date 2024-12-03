@@ -1,8 +1,8 @@
-name: CI
+name: Release
 on:
   push:
     branches:
-      - staging
+      - main
 
 env:
   NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
         run: yarn prepack
 
   publish-lib-npm:
-    if: github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/main'
     needs: [lint, test]
     runs-on: ubuntu-latest
     permissions:
@@ -68,12 +68,12 @@ jobs:
           git config user.email ${{ secrets.USER_EMAIL }}
           git config user.name ${{ secrets.USER_NAME }}
 
-      - run: yarn publish --tag beta
+      - run: yarn publish --non-interactive --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-lib-github:
-    if: github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/main'
     needs: [lint, test]
     runs-on: ubuntu-latest
     permissions:
@@ -88,6 +88,6 @@ jobs:
 
       - run: yarn
       - run: yarn prepack
-      - run: yarn publish --tag beta
+      - run: yarn publish --non-interactive --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
