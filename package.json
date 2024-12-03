@@ -1,6 +1,6 @@
 {
   "name": "@leapwallet/leap-keychain-rn",
-  "version": "0.1.9-beta.1",
+  "version": "2.0.0",
   "description": "Key management library for react native apps",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
