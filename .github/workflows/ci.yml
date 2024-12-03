@@ -47,7 +47,7 @@ jobs:
       - name: Build package
         run: yarn prepack
 
-  publish-lib:
+  publish-lib-npm:
     if: github.ref == 'refs/heads/main'
     needs: [lint, test]
     runs-on: ubuntu-latest
@@ -60,8 +60,6 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-        with:
-          node-version: 16
 
       - run: yarn
       - run: yarn prepack
@@ -70,7 +68,26 @@ jobs:
           git config user.email ${{ secrets.USER_EMAIL }}
           git config user.name ${{ secrets.USER_NAME }}
 
-      - run: npm run release --ci --npm.skipChecks
+      - run: yarn publish --non-interactive --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-lib-github:
+    if: github.ref == 'refs/heads/main'
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - run: yarn
+      - run: yarn prepack
+      - run: yarn publish --non-interactive --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
