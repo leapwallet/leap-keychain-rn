@@ -1,6 +1,6 @@
 {
   "name": "@leapwallet/leap-keychain-rn",
-  "version": "0.1.7",
+  "version": "2.0.0",
   "description": "Key management library for react native apps",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepack": "bob build",
-    "release": "release-it",
+    "prepublish": "bob build",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install && yarn example pods",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
@@ -49,9 +49,13 @@
   },
   "homepage": "https://github.com/leapwallet/leap-keychain-rn#readme",
   "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
-    "@leapwallet/leap-keychain": "0.1.7",
+    "@leapwallet/leap-keychain": "0.3.2",
     "@react-native-community/eslint-config": "^3.0.2",
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/elliptic": "^6.4.14",
@@ -65,10 +69,11 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
+    "metro-react-native-babel-preset": "^0.77.0",
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
     "react": "18.2.0",
-    "react-native": "0.71.0",
+    "react-native": "0.74.2",
     "react-native-builder-bob": "^0.20.0",
     "release-it": "^15.0.0",
     "typescript": "^4.5.2"
@@ -77,43 +82,16 @@
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
-    "@leapwallet/leap-keychain": "0.1.7",
+    "@leapwallet/leap-keychain": "0.3.2",
     "react": "*",
     "react-native": "*",
-    "react-native-quick-crypto": "0.6.1"
-  },
-  "engines": {
-    "node": ">= 16.0.0"
+    "react-native-quick-crypto": "0.7.0"
   },
   "packageManager": "yarn@1.22.15",
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular"
-      }
-    }
   },
   "eslintConfig": {
     "root": true,
@@ -166,16 +144,17 @@
   },
   "dependencies": {
     "@craftzdog/react-native-buffer": "6.0.5",
-    "@leapwallet/leap-keychain": "0.1.7",
+    "@noble/ciphers": "^0.5.3",
+    "@noble/hashes": "^1.4.0",
+    "@scure/base": "^1.1.7",
     "@types/uuid": "9.0.0",
     "assert": "2.0.0",
     "bech32": "2.0.0",
-    "bip32": "2.0.6",
     "cosmjs-types": "0.6.1",
     "elliptic": "6.5.4",
     "react-native-mmkv": "2.6.1",
     "react-native-quick-base64": "2.0.5",
-    "react-native-quick-crypto": "0.6.1",
+    "react-native-quick-crypto": "0.7.0",
     "stream": "0.0.2",
     "typedi": "0.10.0",
     "uuid": "9.0.0"

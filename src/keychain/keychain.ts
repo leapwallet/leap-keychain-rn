@@ -1,54 +1,19 @@
 import {
-  decrypt,
-  encrypt,
-  Key,
-  WALLETTYPE,
-  generateWallet,
-  EthWallet,
-  secp256k1Token,
-  PvtKeyWallet,
   ChainInfo,
+  generateWalletFromMnemonic,
+  generateWalletFromPrivateKey,
+  getFullHDPath,
+  Key,
+  NETWORK,
   pubkeyToAddress,
+  secp256k1Token,
+  WALLETTYPE,
 } from '@leapwallet/leap-keychain';
-import getHDPath from '@leapwallet/leap-keychain/dist/src/utils/get-hdpath';
 
 import Container from 'typedi';
 import * as base64js from 'base64-js';
 import { v4 as uuidv4 } from 'uuid';
-
-//TODO replace with wallet utils function from leap-keychain
-
-function generateWalletFromMnemonic(
-  mnemonic: string,
-  hdPath: string,
-  addressPrefix: string
-) {
-  const hdPathParams = hdPath.split('/');
-  const coinType = hdPathParams[2];
-  if (coinType?.replace("'", '') === '60') {
-    return EthWallet.generateWalletFromMnemonic(mnemonic, {
-      paths: [hdPath],
-      addressPrefix,
-    });
-  }
-  return generateWallet(mnemonic, { paths: [hdPath], addressPrefix });
-}
-
-async function generateWalletFromPrivateKey(
-  privateKey: string,
-  hdPath: string,
-  addressPrefix: string
-) {
-  const hdPathParams = hdPath.split('/');
-  const coinType = hdPathParams[2];
-
-  return coinType === '60'
-    ? EthWallet.generateWalletFromPvtKey(privateKey, {
-        paths: [getHDPath('60', '0')],
-        addressPrefix: addressPrefix,
-      })
-    : await PvtKeyWallet.generateWallet(privateKey, addressPrefix);
-}
+import { rnDecrypt, rnEncrypt } from '../encryption-utils/encryption-utils';
 
 export function compressedPublicKey(publicKey: Uint8Array) {
   const secp256k1 = Container.get(secp256k1Token);
@@ -70,7 +35,7 @@ export class RNKeyChain {
     const walletsData = Object.values(allWallets);
     const lastIndex = walletsData.length;
 
-    const { addresses, pubKey, algo } = await RNKeyChain.getAddresses(
+    const { addresses, pubKey, algo, pubKeys } = await RNKeyChain.getAddresses(
       mnemonic,
       addressIndex?.toString() ?? '0',
       WALLETTYPE.SEED_PHRASE,
@@ -79,7 +44,7 @@ export class RNKeyChain {
 
     const walletId = uuidv4();
 
-    const cipher = encrypt(mnemonic, password);
+    const cipher = rnEncrypt(mnemonic, password);
 
     const wallet: { [id: string]: Key<T> } = {
       [walletId]: {
@@ -94,6 +59,7 @@ export class RNKeyChain {
         id: walletId,
         colorIndex: colorIndex ?? lastIndex,
         pubKey,
+        pubKeys,
         algo,
         isEncrypted: true,
       } as Key<T>,
@@ -124,8 +90,8 @@ export class RNKeyChain {
     let mnemonic = cipher;
 
     if (cipher && password !== '') {
-      mnemonic = decrypt(cipher, password);
-      cipher = encrypt(mnemonic, password);
+      mnemonic = rnDecrypt(cipher, password);
+      cipher = rnEncrypt(mnemonic, password);
     }
 
     if (!mnemonic) throw new Error('Invalid mnemonic');
@@ -158,12 +124,17 @@ export class RNKeyChain {
     mnemonic: string,
     addressIndex = '0',
     walletType: WALLETTYPE,
-    chainInfos: { coinType: string; addressPrefix: string; key: string }[]
+    chainInfos: {
+      coinType: string;
+      addressPrefix: string;
+      key: string;
+      btcNetwork?: typeof NETWORK;
+      useBip84?: boolean;
+    }[]
   ) {
     try {
       const chainsData = Object.entries(chainInfos);
       const addresses: Record<string, string> = {};
-      // const pubKeys: Record<string, string> = {}
 
       let pubKey: Uint8Array | undefined;
       const pubKeys: Record<string, string> = {};
@@ -180,24 +151,30 @@ export class RNKeyChain {
           );
           addresses[chainInfo.key] = address ?? '';
         } else {
+          const purpose = chainInfo.useBip84 ? '84' : '44';
+          const hdPath = getFullHDPath(
+            purpose,
+            chainInfo.coinType,
+            addressIndex
+          );
           const wallet =
             walletType === WALLETTYPE.PRIVATE_KEY
-              ? await generateWalletFromPrivateKey(
+              ? generateWalletFromPrivateKey(
                   mnemonic,
-                  getHDPath(chainInfo.coinType, addressIndex),
+                  hdPath,
                   chainInfo.addressPrefix
                 )
-              : await generateWalletFromMnemonic(
-                  mnemonic,
-                  getHDPath(chainInfo.coinType, addressIndex),
-                  chainInfo.addressPrefix
-                );
+              : generateWalletFromMnemonic(mnemonic, {
+                  hdPath,
+                  addressPrefix: chainInfo.addressPrefix,
+                  ethWallet: false,
+                  btcNetwork: chainInfo.btcNetwork,
+                });
 
           const [account] = await wallet.getAccounts();
           algo = 'secp256k1';
 
           if (chainInfo.addressPrefix === 'cosmos') {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             cosmosPubKey = account?.pubkey as Uint8Array;
           }
 

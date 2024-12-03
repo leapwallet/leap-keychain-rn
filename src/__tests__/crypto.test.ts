@@ -17,7 +17,7 @@ const seedString =
 
 describe('crypto', () => {
   describe('bip39', () => {
-    test('menmonicToSeed', async () => {
+    test('mnemonicToSeed', async () => {
       const seed = await Bip39.mnemonicToSeed(testMnemonic);
       const generatedSeedString = fromByteArray(seed);
 
