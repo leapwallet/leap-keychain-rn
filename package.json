@@ -55,7 +55,7 @@
     "@babel/preset-typescript": "^7.24.7",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
-    "@leapwallet/leap-keychain": "0.2.5-beta.14",
+    "@leapwallet/leap-keychain": "0.3.2",
     "@react-native-community/eslint-config": "^3.0.2",
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/elliptic": "^6.4.14",
@@ -82,7 +82,7 @@
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
-    "@leapwallet/leap-keychain": "0.2.5-beta.14",
+    "@leapwallet/leap-keychain": "0.3.2",
     "react": "*",
     "react-native": "*",
     "react-native-quick-crypto": "0.7.0"
