@@ -25,13 +25,13 @@ class LeapKeychainRnModule internal constructor(context: ReactApplicationContext
   }
 
   @ReactMethod
-  fun mnemonicToSeed(words: ReadableArray, passphrase: String = "", promise: Promise){
+  override fun mnemonicToSeed(words: ReadableArray, passphrase: String?, promise: Promise){
     try {
       val _words: MutableList<String> = arrayListOf()
       for (word: String in words.toArrayList() as ArrayList<String>){
         _words.add(word)
       }
-      val seed = MnemonicCode.toSeed(_words, passphrase);
+      val seed = MnemonicCode.toSeed(_words, passphrase ?: "");
 
       val base64String = Base64.encodeToString(seed, Base64.NO_WRAP )
       promise.resolve(base64String)
