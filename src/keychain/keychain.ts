@@ -162,7 +162,8 @@ export class RNKeyChain {
               ? generateWalletFromPrivateKey(
                   mnemonic,
                   hdPath,
-                  chainInfo.addressPrefix
+                  chainInfo.addressPrefix,
+                  chainInfo.btcNetwork
                 )
               : generateWalletFromMnemonic(mnemonic, {
                   hdPath,

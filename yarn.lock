@@ -2044,10 +2044,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@leapwallet/leap-keychain@0.3.2":
-  version "0.3.2"
-  resolved "https://npm.pkg.github.com/download/@leapwallet/leap-keychain/0.3.2/ec225f948ec3adaba89cf859364cffacb86df9ee#ec225f948ec3adaba89cf859364cffacb86df9ee"
-  integrity sha512-rkPoTrVlYhmEZ3bnwfH8k0k71Q1l9uqEWrhsWZ0ltAira/iVnOg4Ivi6+nFno0UelRlpqc3b01GlCgL8nV/Z0w==
+"@leapwallet/leap-keychain@0.3.3":
+  version "0.3.3"
+  resolved "https://npm.pkg.github.com/download/@leapwallet/leap-keychain/0.3.3/65ca0555d228fe6aea40c48b3b419fc5c9516cb3#65ca0555d228fe6aea40c48b3b419fc5c9516cb3"
+  integrity sha512-xPpktzZmj+lKXFC4Nt4tFAKomw/Nwj+JskPWTiHIlU+bK5yRIHxlnZu0PY6x86+/TvXTgK2iPfNg2vgWN581fw==
   dependencies:
     "@ethersproject/bytes" "5.7.0"
     "@ethersproject/hdnode" "5.7.0"
