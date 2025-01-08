@@ -4,7 +4,6 @@ import {
   generateWalletFromPrivateKey,
   getFullHDPath,
   Key,
-  NETWORK,
   pubkeyToAddress,
   secp256k1Token,
   WALLETTYPE,
@@ -124,13 +123,7 @@ export class RNKeyChain {
     mnemonic: string,
     addressIndex = '0',
     walletType: WALLETTYPE,
-    chainInfos: {
-      coinType: string;
-      addressPrefix: string;
-      key: string;
-      btcNetwork?: typeof NETWORK;
-      useBip84?: boolean;
-    }[]
+    chainInfos: ChainInfo[]
   ) {
     try {
       const chainsData = Object.entries(chainInfos);
@@ -151,6 +144,20 @@ export class RNKeyChain {
           );
           addresses[chainInfo.key] = address ?? '';
         } else {
+          if (chainInfo.customKeygenfn) {
+            const keyType =
+              walletType === WALLETTYPE.PRIVATE_KEY
+                ? 'privateKey'
+                : 'seedPhrase';
+            const key = await chainInfo.customKeygenfn(
+              mnemonic,
+              getFullHDPath('44', chainInfo.coinType),
+              keyType
+            );
+            addresses[chainInfo.key] = key.address;
+            pubKeys[chainInfo.key] = key.pubkey;
+            continue;
+          }
           const purpose = chainInfo.useBip84 ? '84' : '44';
           const hdPath = getFullHDPath(
             purpose,
