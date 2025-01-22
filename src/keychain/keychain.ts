@@ -151,7 +151,7 @@ export class RNKeyChain {
                 : 'seedPhrase';
             const key = await chainInfo.customKeygenfn(
               mnemonic,
-              getFullHDPath('44', chainInfo.coinType),
+              getFullHDPath('44', chainInfo.coinType, addressIndex),
               keyType
             );
             addresses[chainInfo.key] = key.address;
